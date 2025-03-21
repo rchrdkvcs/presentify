@@ -3,6 +3,7 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import Reveal from 'reveal.js'
 import RevealMarkdown from 'reveal.js/plugin/markdown/markdown.esm'
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight.esm'
+import RevealNotes from 'reveal.js/plugin/notes/notes.esm'
 
 type RevealInstance = InstanceType<typeof Reveal>
 
@@ -53,7 +54,7 @@ function initializeReveal(): void {
 
   nextTick(() => {
     deck.value = new Reveal({
-      plugins: [RevealMarkdown, RevealHighlight],
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
     })
 
     if (deck.value) {
@@ -64,8 +65,12 @@ function initializeReveal(): void {
         hash: true,
         transition: 'slide',
         slideNumber: true,
+        showNotes: false,
         markdown: {
-          separator: '---',
+          separator: '^\r?\n---\r?\n$',
+          verticalSeparator: '^\r?\n--\r?\n$',
+          notesSeparator: '^Note:',
+          smartypants: true,
         },
       })
     }
