@@ -1,17 +1,39 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { loadSlides } from '@/composables/slideLoader'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: () => import('@/views/HomeView.vue'),
+    name: 'Home',
+    component: () => import('@/views/DashboardView.vue'),
+    meta: { requiresAuth: false },
   },
-  // Dynamic route for slides
   {
-    path: '/:slug',
-    name: 'slide',
-    component: () => import('@/views/SlideView.vue'),
+    path: '/editor/:id?',
+    name: 'Editor',
+    component: () => import('@/views/EditorView.vue'),
+    props: true,
+  },
+  {
+    path: '/present/:id',
+    name: 'Present',
+    component: () => import('@/views/PresentationView.vue'),
+    props: true,
+  },
+  {
+    path: '/present/:id/speaker',
+    name: 'SpeakerView',
+    component: () => import('@/views/SpeakerView.vue'),
+    props: true,
+  },
+  {
+    path: '/templates',
+    name: 'Templates',
+    component: () => import('@/views/TemplatesView.vue'),
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('@/views/SettingsView.vue'),
   },
 ]
 
@@ -19,10 +41,5 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
-
-export async function setupSlideRoutes() {
-  const slides = await loadSlides()
-  return slides
-}
 
 export default router
